@@ -1,0 +1,45 @@
+---
+title: "plotly"
+author: "Soulnight"
+date: "15 Mai 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Marriage vs Divorce count per state in Germany 
+
+```{r, warning=FALSE, message=FALSE}
+library(plotly)
+
+data <- read.csv("statistik.csv", sep=";")
+data <- data[order(data$Eheschliessungen), ]
+
+plot_ly(
+  data,
+  x = ~Eheschliessungen,
+  y = ~Bundesland,
+  name = "Marriage",
+  type = 'bar',
+  orientation = 'h'
+) %>%
+add_trace(
+  x = ~Scheidungen,
+  name = "Divorce",
+  type = 'bar',
+  orientation = 'h'
+) %>%
+layout(
+  title = "Marriages vs divorces per state in Germany",
+  xaxis = list(title = "Count"),
+  yaxis = list(
+    categoryorder = "array",
+    categoryarray = ~Bundesland,
+    title = "State"
+  ),
+  margin = list(l = 100)
+)
+
+```
