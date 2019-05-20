@@ -1,0 +1,83 @@
+---
+title: "Marriage vs Divorce count per state in Germany "
+author: "Soulnight"
+date: "20 Mai 2019"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+suppressPackageStartupMessages({library(dplyr)})
+suppressPackageStartupMessages({library(ggplot2)})
+suppressPackageStartupMessages({library(plotly)})
+```
+
+## Marriage vs Divorce (dataset)
+
+The following is an excerpt of the data used in plot:
+
+```{r, echo = FALSE}
+data <- read.csv("statistik.csv", sep=";")
+head(data)
+```
+
+## Marriage vs Divorce (code)
+
+The main part of the code used to generate the interactive plot:
+
+```
+plot_ly(
+  data,
+  x = ~Eheschliessungen,
+  y = ~Bundesland,
+  name = "Marriage",
+  type = 'bar',
+  orientation = 'h'
+) %>%
+add_trace(
+  x = ~Scheidungen,
+  name = "Divorce",
+  type = 'bar',
+  orientation = 'h'
+)
+```
+
+To see the plot, please go to te next slide.
+
+## Marriage vs Divorce (plot)
+
+The interactive plot:
+
+```{r, echo = FALSE, warng = FALSE}
+data <- data[order(data$Eheschliessungen), ]
+
+plot_ly(
+  data,
+  x = ~Eheschliessungen,
+  y = ~Bundesland,
+  name = "Marriage",
+  type = 'bar',
+  orientation = 'h'
+) %>%
+add_trace(
+  x = ~Scheidungen,
+  name = "Divorce",
+  type = 'bar',
+  orientation = 'h'
+) %>%
+layout(
+  title = "Marriages vs divorces per state in Germany",
+  xaxis = list(title = "Count"),
+  yaxis = list(
+    categoryorder = "array",
+    categoryarray = ~Bundesland,
+    title = "State"
+  ),
+  margin = list(l = 100)
+)
+```
+
